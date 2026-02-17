@@ -46,7 +46,12 @@ export default function ConnectSignup({ tenant, updateTenant, goToStep }: Props)
                 </FieldGroup>
             </CardContent>
             <CardFooter>
-                <Button type="button" onClick={() => goToStep(2)}>Begin Signup</Button>
+                <Button 
+                    type="button"
+                    disabled={!tenant.organizationName || !tenant.contactEmailAddress} 
+                    onClick={() => goToStep(2)}>
+                    Begin Signup
+                </Button>
             </CardFooter>
         </Card>
     )

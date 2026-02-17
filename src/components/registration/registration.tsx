@@ -21,7 +21,7 @@ export function Registration() {
 		contactPhoneNumber: "",
 		couponCode: "",
 		couponDiscount: 0,
-		numberOfUserLicenses: 0,
+		numberOfUserLicenses: 500,
 		organizationName: "",
 		organizationShortName: "",
 	});
