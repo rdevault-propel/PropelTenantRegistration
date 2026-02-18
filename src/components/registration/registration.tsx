@@ -9,8 +9,8 @@ import type { Tenant } from "@/types/tenant";
 import ConnectSignup from "./connectSignup";
 import ConnectPlan from "./connectPlan";
 import ConnectBilling from "./connectBilling";
-import Stepperize from "../stepperize/stepperize";
-import type { Step, StepInfo } from "@/types/stepperize";
+import Stepper from "../stepper/stepper";
+import type { Step, StepInfo } from "@/types/stepper";
 
 export function Registration() {
 	const [step, setStep] = useState<number>(1);
@@ -77,5 +77,5 @@ export function Registration() {
 		}
 	]
 
-	return <Stepperize step={step} steps={steps} stepInfo={stepInfo}/>;
+	return <Stepper step={step} steps={steps} stepInfo={stepInfo}/>;
 }

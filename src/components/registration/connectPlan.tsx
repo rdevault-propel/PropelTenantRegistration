@@ -97,8 +97,8 @@ export default function ConnectPlan({
         const newErrors: typeof errors = {
             numberOfUserLicensesError: validateNumberOfUserLicenses(tenant.numberOfUserLicenses, MIN_LICENSES),
             organizationShortNameError: validateOrganizationShortName(tenant.organizationShortName, MIN_ORG_SHORT_NAME, MAX_ORG_SHORT_NAME),
-            contactFirstNameError: tenant.contactFirstName ? "" : "Contact first name is required",
-            contactLastNameError: tenant.contactLastName ? "" : "Contact last name is required",
+            contactFirstNameError: tenant.contactFirstName ? "" : "Required",
+            contactLastNameError: tenant.contactLastName ? "" : "Required",
             contactPhoneNumberError: validatePhoneNumber(tenant.contactPhoneNumber),
         };
         setErrors(newErrors);

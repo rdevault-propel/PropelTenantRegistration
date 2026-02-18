@@ -19,6 +19,7 @@ export function validateOrganizationShortName(organizationShortName: string, min
 }
 
 export function validatePhoneNumber(phoneNumber: string): string {
+    if(!phoneNumber) return "Required"
     // Basic US/Intl phone regex, allows digits, spaces, +, -, ()
     const re = /^\+?[\d\s\-()]{7,15}$/;
     return re.test(phoneNumber.trim()) 

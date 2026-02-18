@@ -1,17 +1,18 @@
-import type { Step, StepInfo } from "@/types/stepperize";
 import React from "react";
 
-type StepperizeProps = {
+import type { Step, StepInfo } from "@/types/stepper";
+
+type StepperProps = {
     step: number;
     steps: Step[];
     stepInfo: StepInfo[];
 };
 
-export default function Stepperize({ 
+export default function Stepper({ 
     step, 
     steps, 
     stepInfo 
-}: StepperizeProps) {
+}: StepperProps) {
     return (
         <div className="mt-2.5">
             {/* Visual Stepper */}
