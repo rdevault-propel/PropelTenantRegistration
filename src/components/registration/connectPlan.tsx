@@ -131,6 +131,7 @@ export default function ConnectPlan({
                                     type="number"
                                     min={500}
                                     aria-invalid={errors.numberOfUserLicensesError !== ""}
+                                    autoComplete="off"
                                     onChange={handleNumberOfUserLicensesChange}
                                     onBlur={updateAnnualLicenseCost} // Update cost after moving out of input box
                                 />
@@ -143,8 +144,9 @@ export default function ConnectPlan({
                                     id="input-coupon-code"
                                     defaultValue={tenant.couponCode}
                                     type="text"
-                                    onChange={event => updateTenant("couponCode", event.target.value)}
                                     required
+                                    autoComplete="off"
+                                    onChange={event => updateTenant("couponCode", event.target.value)}
                                 />
                             </Field>
                             <Button type="button" onClick={updateCouponDiscount} disabled={!tenant.couponCode}>
@@ -194,6 +196,7 @@ export default function ConnectPlan({
                                     required
                                     minLength={MIN_ORG_SHORT_NAME}
                                     maxLength={MAX_ORG_SHORT_NAME}
+                                    autoComplete="off"
                                     aria-invalid={errors.organizationShortNameError !== ""}
                                     onChange={handleOrganizationShortNameChange} 
                                 />
@@ -227,6 +230,7 @@ export default function ConnectPlan({
                                     defaultValue={tenant.contactFirstName}
                                     type="text"
                                     required
+                                    autoComplete="off"
                                     aria-invalid={errors.contactFirstNameError !== ""}
                                     onChange={handleContactFirstNameChange}
                                 />
@@ -240,6 +244,7 @@ export default function ConnectPlan({
                                     defaultValue={tenant.contactLastName}
                                     type="text"
                                     required
+                                    autoComplete="off"
                                     aria-invalid={errors.contactLastNameError !== ""}
                                     onChange={handleContactLastNameChange}
                                 />
@@ -253,6 +258,7 @@ export default function ConnectPlan({
                                     defaultValue={tenant.contactPhoneNumber}
                                     type="tel"
                                     required
+                                    autoComplete="off"
                                     aria-invalid={errors.contactPhoneNumberError !== ""}
                                     onChange={handleContactPhoneNumberChange}
                                 />

@@ -2,15 +2,13 @@
 
 import { useCallback, useState } from "react";
 
-// Types
 import type { Tenant } from "@/types/tenant";
-
-// Components
-import ConnectSignup from "./connectSignup";
-import ConnectPlan from "./connectPlan";
-import ConnectBilling from "./connectBilling";
-import Stepper from "../stepper/stepper";
 import type { Step, StepInfo } from "@/types/stepper";
+
+import ConnectSignup from "../components/registration/connectSignup";
+import ConnectPlan from "../components/registration/connectPlan";
+import ConnectBilling from "../components/registration/connectBilling";
+import Stepper from "../components/stepper/stepper";
 
 export function Registration() {
 	const [step, setStep] = useState<number>(1);

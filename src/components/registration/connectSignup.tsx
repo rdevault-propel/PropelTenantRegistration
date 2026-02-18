@@ -70,13 +70,14 @@ export default function ConnectSignup({
                     <Field>
                         <FieldLabel htmlFor="input-organization-name">Organization</FieldLabel>
                         <FieldDescription>
-                            Name of the organization signing up.
+                            Name of the organization signing up
                         </FieldDescription>
                         <Input 
                             id="input-organization-name" 
                             defaultValue={tenant.organizationName} 
                             type="text"
                             required
+                            autoComplete="off"
                             aria-invalid={errors.organizationNameError !== ""}
                             onChange={handleOrganizationNameChange}
                         />
@@ -93,6 +94,7 @@ export default function ConnectSignup({
                             defaultValue={tenant.contactEmailAddress} 
                             type="email"
                             required
+                            autoComplete="off"
                             aria-invalid={errors.contactEmailAddressError !== ""}
                             onChange={handleContactEmailAddressChange}
                         />
