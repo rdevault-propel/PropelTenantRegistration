@@ -9,7 +9,8 @@ import type { Tenant } from "@/types/tenant";
 import ConnectSignup from "./connectSignup";
 import ConnectPlan from "./connectPlan";
 import ConnectBilling from "./connectBilling";
-import { Stepperize } from "../stepperize/stepperize";
+import Stepperize from "../stepperize/stepperize";
+import type { Step, StepInfo } from "@/types/stepperize";
 
 export function Registration() {
 	const [step, setStep] = useState<number>(1);
@@ -21,7 +22,7 @@ export function Registration() {
 		contactPhoneNumber: "",
 		couponCode: "",
 		couponDiscount: 0,
-		numberOfUserLicenses: 500,
+		numberOfUserLicenses: 0,
 		organizationName: "",
 		organizationShortName: "",
 	});
@@ -34,31 +35,45 @@ export function Registration() {
 
 	const steps: Step[] = [
 		{ 
-			component: ConnectSignup, 
-			props: { tenant, updateTenant, goToStep: setStep } 
+			element: (
+				<ConnectSignup 
+					tenant={tenant}
+					updateTenant={updateTenant}
+					setStep={setStep}
+				/>
+			) 
 		},
 		{ 
-			component: ConnectPlan, 
-			props: { tenant, updateTenant, goToStep: setStep } 
+			element: (
+				<ConnectPlan
+					tenant={tenant}
+					updateTenant={updateTenant}
+					setStep={setStep}
+				/>
+			)
 		},
 		{ 
-			component: ConnectBilling, 
-			props: { tenant, updateTenant, goToStep: setStep } 
+			element: (
+				<ConnectBilling
+					tenant={tenant}
+					setStep={setStep}
+				/>
+			)
 		},
 	];
 
 	const stepInfo: StepInfo[] = [
 		{
 			label: "Signup",
-			description: "Connect Platform Signup"
+			description: ""
 		},
 		{
 			label: "Plan",
-			description: "Your Connect Plan"
+			description: ""
 		},
 		{
 			label: "Billing",
-			description: "Billing Information"
+			description: ""
 		}
 	]
 

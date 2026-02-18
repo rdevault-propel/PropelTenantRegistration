@@ -1,16 +1,18 @@
-export function getCouponDiscount(couponCode: string){
+export async function getCouponDiscount(couponCode: string){
     // Fake test code
-    return couponCode?.includes("off")
+    return Promise.resolve(couponCode?.includes("off")
         ? 100
-        : 0;
+        : 0
+    );
 }
 
-export function getAnnualLicenseCost(numberOfLicenses: number){
+export async function getAnnualLicenseCost(numberOfLicenses: number){
     // Fake test code
     const MIN_LICENSES = 500;
     const ANNUAL_COST_PER_LICENSE = 10;
 
-    return numberOfLicenses > MIN_LICENSES
+    return Promise.resolve(numberOfLicenses > MIN_LICENSES
         ? numberOfLicenses * ANNUAL_COST_PER_LICENSE
-        : MIN_LICENSES * ANNUAL_COST_PER_LICENSE;
+        : MIN_LICENSES * ANNUAL_COST_PER_LICENSE
+    );
 }

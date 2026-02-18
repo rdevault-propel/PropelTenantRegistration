@@ -1,9 +1,10 @@
-type Step = {
-    component: React.FC<any>;
-    props: any;
+import type { ReactElement } from "react";
+
+export type Step = {
+    element: ReactElement
 };
 
-type StepInfo = {
+export type StepInfo = {
     label: string,
     description: string
 }

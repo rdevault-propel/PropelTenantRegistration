@@ -1,19 +1,17 @@
-// Helpers
-import { formatNumber } from "@/helpers/formatter";
+import { formatNumber } from "@/helpers/formatters";
 
-// UI
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
-type Props = {
+type ConnectCostSummaryProps = {
     annualLicenseCost: number,
     couponDiscount: number
 }
 
-export default function ConnectCostSummary({ annualLicenseCost, couponDiscount }: Props): React.ReactElement{
+export default function ConnectCostSummary({ annualLicenseCost, couponDiscount }: ConnectCostSummaryProps): React.ReactElement{
     return (
-        <Card className="relative mx-auto w-100 pt-5 flex-none self-stretch">
+        <Card className="relative mx-auto w-100 flex-none self-stretch p-4">
             <CardHeader>
-                <CardTitle>Configure Your Connect Plan</CardTitle>
+                <CardTitle className="text-2xl">Plan Summary</CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="space-y-2 w-64">

@@ -1,45 +1,30 @@
 import { useState } from "react";
 
-// Types
 import type { Tenant, UpdateTenant } from "@/types/tenant";
 
-// API
 import { getAnnualLicenseCost, getCouponDiscount } from "@/api/registrationAPI";
 
-// Components
 import ConnectCostSummary from "./connectCostSummary";
 
-// Helpers
-import { validatePhoneNumber, validateOrganizationShortName, validateNumberOfUserLicenses } from "@/helpers/validators";
+import { validateNumberOfUserLicenses, validateOrganizationShortName, validatePhoneNumber } from "@/helpers/validators";
 
-// UI
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "../ui/field";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
-type Props = {
+type ConnectPlanProps = {
     tenant: Tenant,
     updateTenant: UpdateTenant,
-    goToStep: (step: number) => void
+    setStep: (step: number) => void
 }
 
-export default function ConnectPlan({ tenant, updateTenant, goToStep }: Props): React.ReactElement{
-    const MIN_LICENSES = 500;
-    const MIN_ORG_SHORT_NAME = 3;
-    const MAX_ORG_SHORT_NAME = 12;
-
-    const updateAnnualLicenseCost = () =>{
-        const annualLicenseCost = getAnnualLicenseCost(tenant.numberOfUserLicenses);
-        updateTenant("annualLicenseCost", annualLicenseCost);
-    }
-
-    const updateCouponDiscount = () => {
-        const couponDiscount = getCouponDiscount(tenant.couponCode);
-        updateTenant("couponDiscount", couponDiscount);
-    }
-
+export default function ConnectPlan({ 
+    tenant, 
+    updateTenant, 
+    setStep 
+}: ConnectPlanProps) {
     const [errors, setErrors] = useState<{ 
         numberOfUserLicensesError: string,
         organizationShortNameError: string,
@@ -54,47 +39,61 @@ export default function ConnectPlan({ tenant, updateTenant, goToStep }: Props): 
         contactPhoneNumberError: ""
     });
 
+    const MAX_ORG_SHORT_NAME = 12;
+    const MIN_ORG_SHORT_NAME = 3;
+    const MIN_LICENSES = 500;
+
     function handleNumberOfUserLicensesChange(e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>){
         setErrors(prev => ({
             ...prev, 
             numberOfUserLicensesError: ""
-        }))
-        updateTenant("numberOfUserLicenses", Number(e.target.value))
-    }
-
-    function handleOrganizationShortNameChange(e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>){
-        setErrors(prev => ({
-            ...prev, 
-            organizationShortNameError: ""
-        }))
-        updateTenant("organizationShortName", e.target.value)
+        }));
+        updateTenant("numberOfUserLicenses", Number(e.target.value));
     }
 
     function handleContactFirstNameChange(e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>){
         setErrors(prev => ({
             ...prev, 
             contactFirstNameError: ""
-        }))
-        updateTenant("contactFirstName", e.target.value)
+        }));
+        updateTenant("contactFirstName", e.target.value);
     }
 
     function handleContactLastNameChange(e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>){
         setErrors(prev => ({
             ...prev, 
             contactLastNameErrorE: ""
-        }))
-        updateTenant("contactLastName", e.target.value)
+        }));
+        updateTenant("contactLastName", e.target.value);
     }
 
     function handleContactPhoneNumberChange(e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>){
         setErrors(prev => ({
             ...prev, 
             contactPhoneNumberError: ""
-        }))
-        updateTenant("contactPhoneNumber", e.target.value)
+        }));
+        updateTenant("contactPhoneNumber", e.target.value);
     }
 
-    const handleNext = () => {
+    function handleOrganizationShortNameChange(e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>){
+        setErrors(prev => ({
+            ...prev, 
+            organizationShortNameError: ""
+        }));
+        updateTenant("organizationShortName", e.target.value);
+    }
+
+    async function updateAnnualLicenseCost(){
+        const annualLicenseCost = await getAnnualLicenseCost(tenant.numberOfUserLicenses);
+        updateTenant("annualLicenseCost", annualLicenseCost);
+    }
+
+    async function updateCouponDiscount(){
+        const couponDiscount = await getCouponDiscount(tenant.couponCode);
+        updateTenant("couponDiscount", couponDiscount);
+    }
+
+    async function validateBeforeNext(){
         const newErrors: typeof errors = {
             numberOfUserLicensesError: validateNumberOfUserLicenses(tenant.numberOfUserLicenses, MIN_LICENSES),
             organizationShortNameError: validateOrganizationShortName(tenant.organizationShortName, MIN_ORG_SHORT_NAME, MAX_ORG_SHORT_NAME),
@@ -108,27 +107,24 @@ export default function ConnectPlan({ tenant, updateTenant, goToStep }: Props): 
             return
         }
         else{
-            goToStep(2);
+            await updateAnnualLicenseCost(); // Failsafe: always ensure cost is correct before moving to next page
+            setStep(3);
         }
     }
 
     return(
-        <div className="flex flex-wrap gap-6 items-stretch">
+        <div className="flex flex-wrap gap-6 items-stretch p-4">
             {/* Left Column */}
             <div className="flex flex-wrap gap-6 flex-1">
-                <Card className="relative mx-auto pt-5 flex-1 min-w-[400px]">
+                <Card className="relative mx-auto pt-5 min-w-[400px]">
                     <CardHeader>
-                        <CardTitle>Configure Your Connect Plan</CardTitle>
+                        <CardTitle className="text-2xl">Configure Your Connect Plan</CardTitle>
                     </CardHeader>
+
                     <CardContent>
                         <FieldGroup>
-                            <Field data-invalid={errors.numberOfUserLicensesError}>
+                            <Field>
                                 <FieldLabel htmlFor="input-user-licenses">User Licenses</FieldLabel>
-                                {errors.numberOfUserLicensesError && 
-                                    <small className="text-red-500">
-                                        {errors.numberOfUserLicensesError}
-                                    </small>
-                                }
                                 <Input
                                     id="input-user-licenses"
                                     defaultValue={tenant.numberOfUserLicenses}
@@ -136,14 +132,13 @@ export default function ConnectPlan({ tenant, updateTenant, goToStep }: Props): 
                                     min={500}
                                     aria-invalid={errors.numberOfUserLicensesError !== ""}
                                     onChange={handleNumberOfUserLicensesChange}
+                                    onBlur={updateAnnualLicenseCost} // Update cost after moving out of input box
                                 />
+                                {errors.numberOfUserLicensesError && <FieldError errors={[{message: errors.numberOfUserLicensesError}]} />}
                                 <FieldDescription>
                                     Minimum licenses: {MIN_LICENSES}
                                 </FieldDescription>
                             </Field>
-                            <Button type="button" onClick={updateAnnualLicenseCost} disabled={!tenant.numberOfUserLicenses}>
-                                Update Totals
-                            </Button>
 
                             <Field>
                                 <FieldLabel htmlFor="input-coupon-code">Coupon Code</FieldLabel>
@@ -164,11 +159,12 @@ export default function ConnectPlan({ tenant, updateTenant, goToStep }: Props): 
 
                 <Card className="relative mx-auto pt-5 flex-1 min-w-[400px]">
                     <CardHeader>
-                        <CardTitle>Customer Information</CardTitle>
+                        <CardTitle className="text-2xl">Customer Information</CardTitle>
                     </CardHeader>
+
                     <CardContent>
-                        {/* Organization */}
                         <FieldGroup>
+                            {/* Organization name is readonly - edit on previous page */}
                             <Field>
                                 <FieldLabel htmlFor="input-organization-name">Organization</FieldLabel>
                                 <span className="inline-block w-fit"></span>
@@ -189,13 +185,8 @@ export default function ConnectPlan({ tenant, updateTenant, goToStep }: Props): 
                                 </Tooltip>
                             </Field>
 
-                            <Field data-invalid={errors.organizationShortNameError}>
+                            <Field>
                                 <FieldLabel htmlFor="input-organization-short-name">Organization Short Name</FieldLabel>
-                                {errors.organizationShortNameError && 
-                                    <FieldDescription className="text-red-500">
-                                        {errors.organizationShortNameError}
-                                    </FieldDescription>
-                                }
                                 <Input
                                     id="input-organization-short-name" 
                                     value={tenant.organizationShortName} 
@@ -204,13 +195,15 @@ export default function ConnectPlan({ tenant, updateTenant, goToStep }: Props): 
                                     minLength={MIN_ORG_SHORT_NAME}
                                     maxLength={MAX_ORG_SHORT_NAME}
                                     aria-invalid={errors.organizationShortNameError !== ""}
-                                    onChange={handleOrganizationShortNameChange} />
+                                    onChange={handleOrganizationShortNameChange} 
+                                />
+                                {errors.organizationShortNameError && <FieldError errors={[{message: errors.organizationShortNameError}]} />}
                                 <FieldDescription>
                                     Short Name must be {MAX_ORG_SHORT_NAME} letters or less to be used in member registration and site access
                                 </FieldDescription>
                             </Field>
 
-                            {/* Primary Contact */}
+                            {/* Email Address is readonly - edit on previous page */}
                             <Field>
                                 <FieldLabel htmlFor="input-contact-email-address">Email Address</FieldLabel>
                                 <Tooltip>
@@ -240,6 +233,7 @@ export default function ConnectPlan({ tenant, updateTenant, goToStep }: Props): 
                                     aria-invalid={errors.contactFirstNameError !== ""}
                                     onChange={handleContactFirstNameChange}
                                 />
+                                {errors.contactFirstNameError && <FieldError errors={[{message: errors.contactFirstNameError}]} />}
                             </Field>
 
                             <Field>
@@ -252,6 +246,7 @@ export default function ConnectPlan({ tenant, updateTenant, goToStep }: Props): 
                                     aria-invalid={errors.contactLastNameError !== ""}
                                     onChange={handleContactLastNameChange}
                                 />
+                                {errors.contactLastNameError && <FieldError errors={[{message: errors.contactLastNameError}]} />}
                             </Field>
 
                             <Field>
@@ -264,12 +259,14 @@ export default function ConnectPlan({ tenant, updateTenant, goToStep }: Props): 
                                     aria-invalid={errors.contactPhoneNumberError !== ""}
                                     onChange={handleContactPhoneNumberChange}
                                 />
+                                {errors.contactPhoneNumberError && <FieldError errors={[{message: errors.contactPhoneNumberError}]} />}
                             </Field>
                         </FieldGroup>
                     </CardContent>
+
                     <CardFooter className="flex justify-between">
-                        <Button type="button" onClick={() => goToStep(1)}>Back</Button>
-                        <Button type="button" onClick={handleNext}>Continue To Payment</Button>
+                        <Button type="button" onClick={() => setStep(1)}>Back</Button>
+                        <Button type="button" onClick={validateBeforeNext}>Continue To Payment</Button>
                     </CardFooter>
                 </Card>
             </div>
