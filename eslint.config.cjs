@@ -4,9 +4,15 @@ const reactHooks = require("eslint-plugin-react-hooks");
 const reactRefresh = require("eslint-plugin-react-refresh");
 const simpleImportSort = require("eslint-plugin-simple-import-sort");
 const tanstackQuery = require("@tanstack/eslint-plugin-query");
+const js = require("@eslint/js");
+const tselint = require("typescript-eslint");
 
 module.exports = defineConfig([
+  js.configs.recommended,
+  ...tselint.configs.recommended,
   {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+
     languageOptions: {
       globals: {
         window: "readonly",
@@ -17,9 +23,14 @@ module.exports = defineConfig([
       ecmaVersion: "latest",
       sourceType: "module",
     },
+
     settings: {
       react: {
         version: "detect",
+        pragma: "React",
+        // tell ESLint to use the new JSX transform
+        reactNamespace: "React",
+        jsxRuntime: "automatic"
       },
     },
 
@@ -41,6 +52,8 @@ module.exports = defineConfig([
       "no-unused-vars": "off",
       "react/no-unescaped-entities": 0,
       "react/no-unknown-property": 0,
+      "react/jsx-uses-react": "off",
+      "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "react/jsx-filename-extension": [1, { extensions: [".ts", ".tsx"] }],
       "react-hooks/rules-of-hooks": "off",
@@ -58,6 +71,7 @@ module.exports = defineConfig([
   },
 
   globalIgnores([
+    "eslint.config.cjs",
     "**/node_modules/**",
     "**/dist/**",
     "**/build/**",
