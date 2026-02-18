@@ -69,6 +69,9 @@ export default function ConnectSignup({
                 <FieldGroup>
                     <Field>
                         <FieldLabel htmlFor="input-organization-name">Organization</FieldLabel>
+                        <FieldDescription>
+                            Enter the name of the organization signing up.
+                        </FieldDescription>
                         <Input 
                             id="input-organization-name" 
                             defaultValue={tenant.organizationName} 
@@ -78,13 +81,13 @@ export default function ConnectSignup({
                             onChange={handleOrganizationNameChange}
                         />
                         {errors.organizationNameError && <FieldError errors={[{message: errors.organizationNameError}]} />}
-                        <FieldDescription>
-                            Enter the name of the organization signing up.
-                        </FieldDescription>
                     </Field>
 
                     <Field>
                         <FieldLabel htmlFor="input-contact-email-address">Email Address</FieldLabel>
+                        <FieldDescription>
+                            This should be the email address of the primary contact who will administer the organization in Connect
+                        </FieldDescription>
                         <Input 
                             id="input-contact-email-address" 
                             defaultValue={tenant.contactEmailAddress} 
@@ -94,9 +97,6 @@ export default function ConnectSignup({
                             onChange={handleContactEmailAddressChange}
                         />
                         {errors.contactEmailAddressError && <FieldError errors={[{message: errors.contactEmailAddressError}]} />}
-                        <FieldDescription>
-                            This should be the email address of the primary contact who will administer the organization in Connect
-                        </FieldDescription>
                     </Field>
                 </FieldGroup>
             </CardContent>

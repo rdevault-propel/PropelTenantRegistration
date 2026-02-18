@@ -62,7 +62,7 @@ export default function ConnectPlan({
     function handleContactLastNameChange(e: React.ChangeEvent<HTMLInputElement, HTMLInputElement>){
         setErrors(prev => ({
             ...prev, 
-            contactLastNameErrorE: ""
+            contactLastNameError: ""
         }));
         updateTenant("contactLastName", e.target.value);
     }
@@ -116,7 +116,7 @@ export default function ConnectPlan({
         <div className="flex flex-wrap gap-6 items-stretch p-4">
             {/* Left Column */}
             <div className="flex flex-wrap gap-6 flex-1">
-                <Card className="relative mx-auto pt-5 min-w-[400px]">
+                <Card className="relative mx-auto pt-5 flex-1 min-w-[400px]">
                     <CardHeader>
                         <CardTitle className="text-2xl">Configure Your Connect Plan</CardTitle>
                     </CardHeader>
@@ -135,9 +135,6 @@ export default function ConnectPlan({
                                     onBlur={updateAnnualLicenseCost} // Update cost after moving out of input box
                                 />
                                 {errors.numberOfUserLicensesError && <FieldError errors={[{message: errors.numberOfUserLicensesError}]} />}
-                                <FieldDescription>
-                                    Minimum licenses: {MIN_LICENSES}
-                                </FieldDescription>
                             </Field>
 
                             <Field>
@@ -187,6 +184,9 @@ export default function ConnectPlan({
 
                             <Field>
                                 <FieldLabel htmlFor="input-organization-short-name">Organization Short Name</FieldLabel>
+                                <FieldDescription>
+                                    Short Name must be {MIN_ORG_SHORT_NAME} - {MAX_ORG_SHORT_NAME} letters to be used in member registration and site access
+                                </FieldDescription>
                                 <Input
                                     id="input-organization-short-name" 
                                     value={tenant.organizationShortName} 
@@ -198,9 +198,6 @@ export default function ConnectPlan({
                                     onChange={handleOrganizationShortNameChange} 
                                 />
                                 {errors.organizationShortNameError && <FieldError errors={[{message: errors.organizationShortNameError}]} />}
-                                <FieldDescription>
-                                    Short Name must be {MAX_ORG_SHORT_NAME} letters or less to be used in member registration and site access
-                                </FieldDescription>
                             </Field>
 
                             {/* Email Address is readonly - edit on previous page */}
