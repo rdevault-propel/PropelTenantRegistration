@@ -6,6 +6,8 @@ const simpleImportSort = require("eslint-plugin-simple-import-sort");
 const tanstackQuery = require("@tanstack/eslint-plugin-query");
 const js = require("@eslint/js");
 const tselint = require("typescript-eslint");
+const prettierPlugin = require("eslint-plugin-prettier");
+const prettierOptions = require("./.prettier.json");
 
 module.exports = defineConfig([
   js.configs.recommended,
@@ -30,16 +32,17 @@ module.exports = defineConfig([
         pragma: "React",
         // tell ESLint to use the new JSX transform
         reactNamespace: "React",
-        jsxRuntime: "automatic"
+        jsxRuntime: "automatic",
       },
     },
 
     plugins: {
-      "react": react, 
-      "react-hooks": reactHooks, 
+      react: react,
+      "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
       "simple-import-sort": simpleImportSort,
       "@tanstack/query": tanstackQuery,
+      prettier: prettierPlugin,
     },
 
     rules: {
@@ -47,6 +50,9 @@ module.exports = defineConfig([
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       ...tanstackQuery.configs.recommended.rules,
+
+      // Prettier
+      "prettier/prettier": ["error", prettierOptions],
 
       // Overrides
       "no-unused-vars": "off",
@@ -58,8 +64,14 @@ module.exports = defineConfig([
       "react/jsx-filename-extension": [1, { extensions: [".ts", ".tsx"] }],
       "react-hooks/rules-of-hooks": "off",
       "react-hooks/exhaustive-deps": "off",
-      "react-refresh/only-export-components": ["off", { allowConstantExport: true }],
-      "simple-import-sort/imports": ["off", { groups: [["^\\u0000"], ["^@?\\w"], ["^@src", "^@shared"], ["^\\."]] }],
+      "react-refresh/only-export-components": [
+        "off",
+        { allowConstantExport: true },
+      ],
+      "simple-import-sort/imports": [
+        "off",
+        { groups: [["^\\u0000"], ["^@?\\w"], ["^@src", "^@shared"], ["^\\."]] },
+      ],
       "simple-import-sort/exports": "off",
       "sort-imports": "off",
       "import/order": "off",

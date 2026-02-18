@@ -1,10 +1,10 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'react'
 
 export type Step = {
-    element: ReactElement
-};
+  element: ReactElement
+}
 
 export type StepInfo = {
-    label: string,
-    description: string
+  label: string
+  description: string
 }
