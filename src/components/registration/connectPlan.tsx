@@ -161,7 +161,7 @@ export default function ConnectPlan({
 
                     <CardContent>
                         <FieldGroup>
-                            {/* Organization name is readonly - edit on previous page */}
+                            {/* Organization name is readonly - edit on signup page */}
                             <Field>
                                 <FieldLabel htmlFor="input-organization-name">Organization</FieldLabel>
                                 <span className="inline-block w-fit"></span>
@@ -177,7 +177,7 @@ export default function ConnectPlan({
                                         />
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                        <p>Edit organization name on previous page</p>
+                                        <p>Edit organization name on signup page</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </Field>
@@ -200,7 +200,7 @@ export default function ConnectPlan({
                                 {errors.organizationShortNameError && <FieldError errors={[{message: errors.organizationShortNameError}]} />}
                             </Field>
 
-                            {/* Email Address is readonly - edit on previous page */}
+                            {/* Email Address is readonly - edit on signup page */}
                             <Field>
                                 <FieldLabel htmlFor="input-contact-email-address">Email Address</FieldLabel>
                                 <Tooltip>
@@ -215,7 +215,7 @@ export default function ConnectPlan({
                                         />
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                        <p>Edit email on previous page</p>
+                                        <p>Edit email on signup page</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </Field>
